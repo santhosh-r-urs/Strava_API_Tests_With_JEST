@@ -46,7 +46,8 @@ For Step 3, you may need to refer Strava API Documentation to get refresh token 
 4. Unzip and open the folder and double click the 'test-report.html' file to view the report.
 
 
-**🔑 OAuth 2.0 Token Refresh Handling**
+**🔑 OAuth 2.0 Token Refresh Handling:**
+
 Strava’s access tokens expire every 6 hours. This suite automatically **securely handles token refresh before running tests**, with **no manual intervention required** !
 ____
 
