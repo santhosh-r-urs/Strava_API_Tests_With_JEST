@@ -39,6 +39,9 @@ jobs:
           echo "BASE_URL=${{ vars.BASE_URL }}" >> .env
           echo "BASE_URL_AUTH=${{ vars.BASE_URL_AUTH }}" >> .env
           echo "CLIENT_ID=${{ vars.CLIENT_ID }}" >> .env
+      - name: Print .env file contents (for debugging)
+        run: cat .env
+        
           
 
       - name: Run Tests & Generate Reports
