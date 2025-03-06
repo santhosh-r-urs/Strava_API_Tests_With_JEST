@@ -8,14 +8,21 @@ Strava APIs use OAuth 2.0 for authentication, where:
 	•	A **refresh token** is required to get a new access token 🔄.
 	•	This test suite automatically refreshes the access token whenever it expires, **ensuring seamless API testing**.
 ⸻
-🔹 Features
+
+**🔹 Features**
 
 ✅ Automated API Testing with Jest & Supertest
+
 ✅ OAuth 2.0 Token Management (Auto-refresh when expired)
+
 ✅ Dynamic Environment Variable Handling
+
 ✅ CI Integrated to Github Actions
+
 ✅ Easy Configuration via .env file
+
 ⸻
+
 **Steps to run the tests locally:**
 1. Clone the repo.
 2. Run 'npm install' command.
