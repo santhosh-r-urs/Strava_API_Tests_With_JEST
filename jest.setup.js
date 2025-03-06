@@ -50,7 +50,25 @@ const getReadTokens = async () => {
   
       // Store the new token in process.env for test execution
       process.env.ACTIVITY_WRITE_ACCESS_TOKEN = response.data.access_token;
-      process.env.ACTIVITY_READ_WRITE_REFRESH_TOKEN = response.data.refresh_token; 
+      process.env.ACTIVITY_WRITE_REFRESH_TOKEN = response.data.refresh_token; 
+  
+    } catch (error) {
+      console.error("Failed to refresh Strava Token:", error.response?.data || error.message);
+    }
+  };
+
+  const getActivityReadTokens = async () => {
+    try {
+      const response = await axios.post(process.env.BASE_URL_AUTH, {
+        client_id: process.env.CLIENT_ID,
+        client_secret: process.env.CLIENT_SECRET,
+        grant_type: "refresh_token",
+        refresh_token: process.env.ACTIVITY_READ_REFRESH_TOKEN,
+      });
+  
+      // Store the new token in process.env for test execution
+      process.env.ACTIVITY_READ_ACCESS_TOKEN = response.data.access_token;
+      process.env.ACTIVITY_READ_REFRESH_TOKEN = response.data.refresh_token; 
   
     } catch (error) {
       console.error("Failed to refresh Strava Token:", error.response?.data || error.message);
@@ -61,5 +79,6 @@ const getReadTokens = async () => {
 await getProfileReadWriteTokens();
 await getReadTokens();
 await getActivityWriteTokens();
+await getActivityReadTokens();
 
 

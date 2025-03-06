@@ -1,0 +1,67 @@
+name: Run Tests on pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+
+jobs:
+  run_tests_on_pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Debug Secrets and Variables
+        run: |
+          echo "ACTIVITY_READ_REFRESH_TOKEN=${{ secrets.ACTIVITY_READ_REFRESH_TOKEN }}"
+          echo "ATHLETE_ID=${{ vars.ATHLETE_ID }}"
+          
+      - name: Create .env File from Environment Secrets
+        run: |
+          echo "ACTIVITY_READ_REFRESH_TOKEN=${{ secrets.ACTIVITY_READ_REFRESH_TOKEN }}" >> .env
+          echo "ACTIVITY_WRITE_REFRESH_TOKEN=${{ secrets.ACTIVITY_WRITE_REFRESH_TOKEN }}" >> .env
+          echo "CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}" >> .env
+          echo "PROFILE_READ_WRITE_REFRESH_TOKEN=${{ secrets.PROFILE_READ_WRITE_REFRESH_TOKEN }}" >> .env
+          echo "READ_REFRESH_TOKEN=${{ secrets.READ_REFRESH_TOKEN }}" >> .env
+          echo "ATHLETE_ID=${{ vars.ATHLETE_ID }}" >> .env
+          echo "BASE_URL=${{ vars.BASE_URL }}" >> .env
+          echo "BASE_URL_AUTH=${{ vars.BASE_URL_AUTH }}" >> .env
+          echo "CLIENT_ID=${{ vars.CLIENT_ID }}" >> .env
+      - name: Print .env file contents (for debugging)
+        run: cat .env
+        
+          
+
+      - name: Run Tests & Generate Reports
+        run: npm run test
+
+      - name: Upload Jest Test Reports (HTML)
+        uses: actions/upload-artifact@v4
+        with:
+          name: jest-html-report
+          path: results/jest/
+          retention-days: 7
+
+      - name: Upload Jest Test Reports (JUnit)
+        uses: actions/upload-artifact@v4
+        with:
+          name: jest-junit-report
+          path: results/jest/junit.xml
+          retention-days: 7

@@ -2,16 +2,15 @@ import request from "supertest";
 import { describe, test, expect } from "@jest/globals";
 import "dotenv/config";
 
-const BASE_URL = "https://www.strava.com/api/v3";
-const ACCESS_TOKEN = process.env.READ_ACCESS_TOKEN;
+const BASE_URL = process.env.BASE_URL;
 const INVALID_TOKEN = "89f71c563770d111c5064c02a75eb88511112345";
 
 
-describe("Read athlete details", () => {
+describe("Read athlete's profile details", () => {
   test("Success case - verify fields received", async () => {
     const response = await request(BASE_URL)
       .get("/athlete")
-      .set("Authorization", `Bearer ${ACCESS_TOKEN}`);
+      .set("Authorization", `Bearer ${process.env.READ_ACCESS_TOKEN}`);
 
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty("id");
@@ -37,8 +36,28 @@ describe("Read athlete details", () => {
     expect(response.body.errors[0].field).toBe("access_token");
     expect(response.body.errors[0].code).toBe("invalid");
   });
+});
 
-  test("Verify using valid token but without necessary scope(permission) 'read'", async () => {
+describe("Read athlete's stats", () => {
+  test("Success case - verify fields received", async () => {
+    const athleteId = process.env.ATHLETE_ID;
+    const response = await request(BASE_URL)
+      .get(`/athletes/${athleteId}/stats`)
+      .set("Authorization", `Bearer ${process.env.READ_ACCESS_TOKEN}`);
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('all_run_totals');
+    expect(response.body).toHaveProperty('all_ride_totals');
+    expect(response.body).toHaveProperty('all_swim_totals');
+    expect(response.body).toHaveProperty('recent_run_totals');
+    expect(response.body).toHaveProperty('recent_ride_totals');
+    expect(response.body).toHaveProperty('recent_swim_totals');
+    expect(response.body).toHaveProperty('ytd_run_totals');
+    expect(response.body).toHaveProperty('ytd_ride_totals');
+    expect(response.body).toHaveProperty('ytd_swim_totals');
+  });
+
+  test("Verify 401 when token is invalid", async () => {
     const response = await request(BASE_URL)
       .get("/athlete")
       .set("Authorization", `Bearer ${INVALID_TOKEN}`);
