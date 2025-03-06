@@ -29,11 +29,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Debug Secrets and Variables
-        run: |
-          echo "ACTIVITY_READ_REFRESH_TOKEN=${{ secrets.ACTIVITY_READ_REFRESH_TOKEN }}"
-          echo "ATHLETE_ID=${{ vars.ATHLETE_ID }}"
-          
       - name: Create .env File from Environment Secrets
         run: |
           echo "ACTIVITY_READ_REFRESH_TOKEN=${{ secrets.ACTIVITY_READ_REFRESH_TOKEN }}" >> .env
@@ -45,11 +40,7 @@ jobs:
           echo "BASE_URL=${{ vars.BASE_URL }}" >> .env
           echo "BASE_URL_AUTH=${{ vars.BASE_URL_AUTH }}" >> .env
           echo "CLIENT_ID=${{ vars.CLIENT_ID }}" >> .env
-      - name: Print .env file contents (for debugging)
-        run: cat .env
-        
           
-
       - name: Run Tests & Generate Reports
         run: npm run test
 
