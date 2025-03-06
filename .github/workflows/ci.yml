@@ -28,6 +28,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Debug Secrets and Variables
+        run: |
+          echo "ACTIVITY_READ_REFRESH_TOKEN=${{ secrets.ACTIVITY_READ_REFRESH_TOKEN }}"
+          echo "ATHLETE_ID=${{ vars.ATHLETE_ID }}"
+          
       - name: Create .env File from Environment Secrets
         run: |
           echo "ACTIVITY_READ_REFRESH_TOKEN=${{ secrets.ACTIVITY_READ_REFRESH_TOKEN }}" >> .env
