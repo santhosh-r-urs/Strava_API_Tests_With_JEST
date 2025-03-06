@@ -28,6 +28,19 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Create .env File from Environment Secrets
+        run: |
+          echo "ACTIVITY_READ_REFRESH_TOKEN=${{ secrets.ACTIVITY_READ_REFRESH_TOKEN }}" >> .env
+          echo "ACTIVITY_WRITE_REFRESH_TOKEN=${{ secrets.ACTIVITY_WRITE_REFRESH_TOKEN }}" >> .env
+          echo "CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}" >> .env
+          echo "PROFILE_READ_WRITE_REFRESH_TOKEN=${{ secrets.PROFILE_READ_WRITE_REFRESH_TOKEN }}" >> .env
+          echo "READ_REFRESH_TOKEN=${{ secrets.READ_REFRESH_TOKEN }}" >> .env
+          echo "ATHLETE_ID=${{ vars.ATHLETE_ID }}" >> .env
+          echo "BASE_URL=${{ vars.BASE_URL }}" >> .env
+          echo "BASE_URL_AUTH=${{ vars.BASE_URL_AUTH }}" >> .env
+          echo "CLIENT_ID=${{ vars.CLIENT_ID }}" >> .env
+          
+
       - name: Run Tests & Generate Reports
         run: npm run test
 
